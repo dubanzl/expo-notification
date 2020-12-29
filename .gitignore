@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+
+# Tests
+/coverage/
+
+# Yarn
+/yarn-error.log
+
+# Build output
+/build/
