@@ -23,7 +23,7 @@ router.route('/notification').post(async function (req: any, res: any) {
     sound: req.body.sound,
     test: req.body.test,
     name: req.body.name,
-    data: { data: 'goes here' },
+    data: req.body.data,
   };
   console.log(data);
   const startTime = new Date(Date.now());
@@ -34,7 +34,13 @@ router.route('/notification').post(async function (req: any, res: any) {
     console.log('se programo la notificacion');
     schedule.scheduleJob(endTime, async function () {
       await new expo().sendPushNotificationsAsync([
-        { title: data.title, body: data.body, to: data.token, sound: data.sound, data: data.data },
+        {
+          title: data.title,
+          body: data.body,
+          to: data.token,
+          sound: data.sound,
+          data: data.data,
+        },
       ]);
       console.log('notification send!!', data.token);
     });
