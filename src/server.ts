@@ -3,7 +3,6 @@ import expo from './ExpoClient';
 var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
-var moment = require('moment');
 var morgan = require('morgan');
 var schedule = require('node-schedule');
 
@@ -20,22 +19,26 @@ router.route('/notification').post(async function (req: any, res: any) {
     body: req.body.body,
     timer: req.body.timer,
     token: req.body.token,
+    _displayInForeground: true,
+    sound: req.body.sound,
+    test: req.body.test,
+    name: req.body.name,
+    data: { data: 'goes here' },
   };
   console.log(data);
   const startTime = new Date(Date.now());
   const endTime = new Date(startTime.getTime() + Number(data.timer));
   console.log('Fecha terminacion', endTime);
   console.log('time enviado', Number(data.timer));
-  console.log(
-    'fecha de terminacion: ',
-    `${moment(Date.now() + Number(data.timer)).format('h:mm:ss a')}`
-  );
-  schedule.scheduleJob(endTime, async function () {
-    await new expo().sendPushNotificationsAsync([
-      { title: data.title, body: data.body, to: data.token },
-    ]);
-    console.log('notification send!!', data.token);
-  });
+  if (!data.test) {
+    console.log('se programo la notificacion');
+    schedule.scheduleJob(endTime, async function () {
+      await new expo().sendPushNotificationsAsync([
+        { title: data.title, body: data.body, to: data.token, sound: data.sound, data: data.data },
+      ]);
+      console.log('notification send!!', data.token);
+    });
+  }
   res.json({ message: 'notification ok!' });
 });
 
