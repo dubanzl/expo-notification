@@ -30,7 +30,7 @@ router.route('/notification').post(async function (req: any, res: any) {
   const endTime = new Date(startTime.getTime() + Number(data.timer));
   console.log('Fecha terminacion', endTime);
   console.log('time enviado', Number(data.timer));
-  if (!data.test) {
+  if (data.test === false) {
     console.log('se programo la notificacion');
     schedule.scheduleJob(endTime, async function () {
       await new expo().sendPushNotificationsAsync([
