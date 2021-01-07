@@ -19,6 +19,7 @@ router.route('/notification').post(async function (req: any, res: any) {
     body: req.body.body,
     timer: req.body.timer,
     token: req.body.token,
+    token2: req.body.token2,
     _displayInForeground: true,
     sound: req.body.sound,
     test: req.body.test,
